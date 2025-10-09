@@ -1,0 +1,128 @@
+﻿<!-- Views/Medico/Crear.cshtml - Formulario de registro -->
+@model ClinicApp.Models.Medico
+
+@{
+    ViewData["Title"] = "Registrar Medico";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    👤 Registrar Nuevo Medico
+                </h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Crear" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <!-- Información Personal -->
+                    <h5 class="text-primary mb-3">📋 Información Personal</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Cedula" class="form-label"></label>
+                                <input asp-for="Cedula" class="form-control" placeholder="1234567890" />
+                                <span asp-validation-for="Cedula" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="FechaNacimiento" class="form-label"></label>
+                                <input asp-for="FechaNacimiento" class="form-control" type="date" />
+                                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Nombres" class="form-label"></label>
+                                <input asp-for="Nombres" class="form-control" placeholder="Juan Carlos" />
+                                <span asp-validation-for="Nombres" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Apellidos" class="form-label"></label>
+                                <input asp-for="Apellidos" class="form-control" placeholder="Pérez González" />
+                                <span asp-validation-for="Apellidos" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información de Contacto -->
+                    <h5 class="text-primary mb-3 mt-3">📞 Información de Contacto</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Telefono" class="form-label"></label>
+                                <input asp-for="Telefono" class="form-control" placeholder="0987654321" />
+                                <span asp-validation-for="Telefono" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" placeholder="medico@email.com" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label asp-for="Direccion" class="form-label"></label>
+                                <textarea asp-for="Direccion" class="form-control" rows="2"
+                                          placeholder="Av. Principal 123, Ciudad"></textarea>
+                                <span asp-validation-for="Direccion" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información Médica -->
+                    <h5 class="text-primary mb-3 mt-3">🩺 Información de Emergencia</h5>
+                    <div class="row">
+                       
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="ContactoEmergencia" class="form-label"></label>
+                                <input asp-for="ContactoEmergencia" class="form-control"
+                                       placeholder="Nombre del contacto de emergencia" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="TelefonoEmergencia" class="form-label"></label>
+                                <input asp-for="TelefonoEmergencia" class="form-control"
+                                       placeholder="Teléfono de emergencia" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="row mt-4">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-success btn-lg me-2">
+                                💾 Registrar Medico
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary btn-lg">
+                                ❌ Cancelar
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

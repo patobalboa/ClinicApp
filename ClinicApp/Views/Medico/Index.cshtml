@@ -1,0 +1,81 @@
+﻿<!-- Views/Pacientes/Index.cshtml - Lista de pacientes -->
+@model List<ClinicApp.Models.Medico>
+
+@{
+    ViewData["Title"] = "Lista de Medicos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>👤 Gestión de Medicos</h2>
+    <a asp-action="Crear" class="btn btn-success">
+        <i class="bi bi-person-plus"></i> Registrar Nuevo Dostor
+    </a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        <strong>¡Éxito!</strong> @TempData["Mensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h4>@ViewBag.TotalMedicos</h4>
+                <p class="mb-0">Medicos Registrados</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <a asp-action="Buscar" class="btn btn-outline-primary w-100 p-3">
+            🔍 Buscar Medico
+        </a>
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Cédula</th>
+                    <th>Nombre Completo</th>
+                    <th>Edad</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var medico in Model)
+                {
+                    <tr>
+                        <td>@medico.Cedula</td>
+                        <td>@medico.NombreCompleto</td>
+                        <td>@medico.Edad años</td>
+                        <td>@medico.Telefono</td>
+                        <td>@medico.Email</td>
+                        <td>
+                            <a asp-action="Detalle" asp-route-cedula="@medico.Cedula"
+                               class="btn btn-sm btn-info">Ver</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="text-center py-5">
+        <h4 class="text-muted">No hay medicos registrados</h4>
+        <p class="text-muted">Registre el primer medico para comenzar</p>
+        <a asp-action="Crear" class="btn btn-primary">Registrar Medico</a>
+    </div>
+}
+
+}
