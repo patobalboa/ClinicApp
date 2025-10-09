@@ -1,0 +1,16 @@
+﻿@{
+	ViewData["Title"] = "Horarios de Atención";
+}
+
+<div class="container">
+    <h2 class="text-center mb-4">📋 Horarios de Atención de la Clínica</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@ViewBag.DiaSeleccionado</h5>
+            <p class="card-text">@ViewBag.HorarioAtencion</p>
+        </div>
+    </div>
+</div>
+<div class="text-center mt-4">
+    <a asp-action="Index" class="btn btn-secondary">← Volver al Inicio</a>
+</div>

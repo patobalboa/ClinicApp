@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Emergencias";
+}
+
+<div class="container">
+    <h2 class="text-center mb-4">📋 Emergencias que atienda la Clínica</h2>
+
+    <div class="row">
+        @foreach (var emergencia in ViewBag.EmergenciasDisponibles)
+        {
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">✅ @emergencia</h5>
+                        <p class="card-text">Funcionalidad disponible en desarrollo</p>
+                        <small class="text-muted">Próximamente en las siguientes secciones</small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-action="Index" class="btn btn-secondary">← Volver al Inicio</a>
+    </div>

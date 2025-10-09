@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Módulos del Sistema";
+}
+
+<div class="container">
+    <h2 class="text-center mb-4">📋 Módulos del Sistema de Clínica</h2>
+
+    <div class="row">
+        @foreach (var modulo in ViewBag.ModulosDisponibles)
+        {
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">✅ @modulo</h5>
+                        <p class="card-text">Funcionalidad disponible en desarrollo</p>
+                        <small class="text-muted">Próximamente en las siguientes secciones</small>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-action="Index" class="btn btn-secondary">← Volver al Inicio</a>
+    </div>
+</div>
+

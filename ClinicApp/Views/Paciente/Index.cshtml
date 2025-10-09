@@ -1,0 +1,81 @@
+﻿<!-- Views/Pacientes/Index.cshtml - Lista de pacientes -->
+@model List<ClinicApp.Models.Paciente>
+
+@{
+    ViewData["Title"] = "Lista de Pacientes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>👤 Gestión de Pacientes</h2>
+    <a asp-action="Crear" class="btn btn-success">
+        <i class="bi bi-person-plus"></i> Registrar Nuevo Paciente
+    </a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        <strong>¡Éxito!</strong> @TempData["Mensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h4>@ViewBag.TotalPacientes</h4>
+                <p class="mb-0">Pacientes Registrados</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <a asp-action="Buscar" class="btn btn-outline-primary w-100 p-3">
+            🔍 Buscar Paciente
+        </a>
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Cédula</th>
+                    <th>Nombre Completo</th>
+                    <th>Edad</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var paciente in Model)
+                {
+                    <tr>
+                        <td>@paciente.Cedula</td>
+                        <td>@paciente.NombreCompleto</td>
+                        <td>@paciente.Edad años</td>
+                        <td>@paciente.Telefono</td>
+                        <td>@paciente.Email</td>
+                        <td>
+                            <a asp-action="Detalle" asp-route-cedula="@paciente.Cedula"
+                               class="btn btn-sm btn-info">Ver</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="text-center py-5">
+        <h4 class="text-muted">No hay pacientes registrados</h4>
+        <p class="text-muted">Registre el primer paciente para comenzar</p>
+        <a asp-action="Crear" class="btn btn-primary">Registrar Paciente</a>
+    </div>
+}
+
+}

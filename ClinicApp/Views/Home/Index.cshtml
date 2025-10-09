@@ -1,0 +1,77 @@
+﻿<!-- Views/Home/Index.cshtml - Modificar la vista existente -->
+@{
+    ViewData["Title"] = "Sistema de Clínica Médica";
+}
+
+<div class="text-center">
+    <h1 class="display-4 text-primary">🏥 @ViewBag.NombreClinica</h1>
+    <p class="lead">Sistema Integral de Gestión Médica</p>
+    <hr class="my-4">
+</div>
+
+<!-- Estadísticas principales -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body text-center">
+                <h4 class="card-title">@ViewBag.TotalPacientes</h4>
+                <p class="card-text">Pacientes Registrados</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body text-center">
+                <h4 class="card-title">@ViewBag.MedicosDisponibles</h4>
+                <p class="card-text">Médicos Disponibles</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body text-center">
+                <h4 class="card-title">@ViewBag.CitasHoy</h4>
+                <p class="card-text">Citas de Hoy</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body text-center">
+                <h4 class="card-title">5</h4>
+                <p class="card-text">Especialidades</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Módulos principales -->
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5 class="card-title">👤 Pacientes</h5>
+                <p class="card-text">Registro y gestión de pacientes de la clínica</p>
+                <a href="#" class="btn btn-primary">Gestionar Pacientes</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5 class="card-title">👩‍⚕️ Médicos</h5>
+                <p class="card-text">Directorio y especialidades médicas</p>
+                <a href="#" class="btn btn-success">Ver Médicos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5 class="card-title">📅 Citas</h5>
+                <p class="card-text">Programación y gestión de citas médicas</p>
+                <a href="#" class="btn btn-info">Programar Citas</a>
+            </div>
+        </div>
+    </div>
+</div>
