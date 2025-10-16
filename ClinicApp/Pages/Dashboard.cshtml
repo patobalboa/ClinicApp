@@ -19,12 +19,12 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Total Ventas
+                            Total Pacientes
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Dashboard.TotalPacientes</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+                        <i class="fas fa-users fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -39,10 +39,10 @@
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                             Citas de Hoy
                         </div>
-						<div class="h5 mb-0 font-weight-bold text-gray-800">$@Model.Dashboard.CitasHoy</div>
+						<div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Dashboard.CitasHoy</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -55,12 +55,12 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                            Medicos Disponibles
+                            Médicos Disponibles
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Dashboard.MedicosActivos</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Dashboard.MedicosDisponibles</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-box fa-2x text-gray-300"></i>
+                        <i class="fas fa-user-md fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                         <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Dashboard.SalasOcupadas</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-users fa-2x text-gray-300"></i>
+                        <i class="fas fa-door-open fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
 <!-- Tablas de Datos -->
 <div class="row">
     <!-- Citas Recientes -->
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Citas Recientes</h6>
@@ -103,10 +103,9 @@
                                 <th>ID</th>
                                 <th>Fecha</th>
                                 <th>Paciente</th>
-                                <th>Medico</th>
-                                <th>Especialidad</th>
+                                <th>Médico</th>
                                 <th>Estado</th>
-								<th>Motivo</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -117,14 +116,12 @@
                                     <td>@cita.FechaHora.ToString("dd/MM HH:mm")</td>
                                     <td>@cita.PacienteNombre</td>
                                     <td>@cita.MedicoNombre</td>
-									<td>@cita.Especialidad</td>
                                     <td>
                                         <span class="badge @(cita.Estado == "Completada" ? "bg-success" :
                                                             cita.Estado == "Pendiente" ? "bg-warning" : "bg-danger")">
                                             @cita.Estado
                                         </span>
                                     </td>
-                                    <td>@cita.Motivo</td>
                                     <td>
                                         <a asp-page="/Citas/Detalle" asp-route-id="@cita.Id" class="btn btn-sm btn-outline-primary">Ver</a>
                                     </td>
@@ -138,7 +135,7 @@
     </div>
 
     <!-- Pacientes Recientes -->
-    <div class=" col-lg-8">
+    <div class="col-lg-6">
 		<div class="card shadow mb-4">
 			<div class="card-header py-3 d-flex justify-content-between align-items-center">
 				<h6 class="m-0 font-weight-bold text-primary">Pacientes Recientes</h6>
@@ -150,10 +147,9 @@
 						<thead>
 							<tr>
 								<th>Cédula</th>
-								<th>Nombre Completo</th>
+								<th>Nombre</th>
 								<th>Fecha Registro</th>
-								<th>Teléfono</th>
-								<th>Email</th>
+								<th>Estado</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
@@ -164,7 +160,6 @@
 									<td>@paciente.Cedula</td>
 									<td>@paciente.NombreCompleto</td>
 									<td>@paciente.FechaRegistro.ToString("dd/MM/yyyy")</td>
-									<td>@paciente.UltimaCita ? paciente.UltimaCita.Value.ToString("dd/MM/yyyy") : "N/A"</td>
 									<td>@paciente.Estado</td>
 									<td>
 										<a asp-page="/Pacientes/Detalle" asp-route-cedula="@paciente.Cedula"
@@ -178,6 +173,4 @@
 			</div>
 		</div>
     </div>
-
-
 </div>

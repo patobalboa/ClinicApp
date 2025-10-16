@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ClinicApp.styles.css" asp-append-version="true" />
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- Estilos adicionales para Dashboard -->
+    <style>
+        .border-left-primary { border-left: 0.25rem solid #4e73df !important; }
+        .border-left-success { border-left: 0.25rem solid #1cc88a !important; }
+        .border-left-info { border-left: 0.25rem solid #36b9cc !important; }
+        .border-left-warning { border-left: 0.25rem solid #f6c23e !important; }
+        .text-gray-800 { color: #5a5c69 !important; }
+        .text-gray-300 { color: #dddfeb !important; }
+        .text-xs { font-size: .7rem; }
+        .shadow { box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important; }
+    </style>
 </head>
 <body>
     <header>
@@ -25,10 +38,10 @@
                                 🏠 Inicio
                             </a>
                         </li>
-                        <li>
-							<a class="nav-link text-white" asp-controller="Dashboard">
-								📊 Dashboard
-							</a>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-page="/Dashboard">
+                                📊 Dashboard
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Paciente" asp-action="Index">
@@ -65,7 +78,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -73,7 +86,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - HECTOOOOOOOOOOOR!!!! - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - ClinicApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
