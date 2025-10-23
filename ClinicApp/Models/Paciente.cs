@@ -1,64 +1,37 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
-namespace ClinicApp.Models
+namespace ClinicApp.Models;
+
+public partial class Paciente
 {
-    public class Paciente
-    {
-        [Required(ErrorMessage = "La cédula es obligatoria")]
-        [Display(Name = "Número de Cédula")]
-        [StringLength(10, MinimumLength = 10, ErrorMessage = "La cédula debe tener 10 caracteres")]
-        public string Cedula { get; set; }
+    public int Id { get; set; }
 
-        [Required(ErrorMessage = "Los nombres son obligatorios")]
-        [Display(Name = "Nombres")]
-        [StringLength(50, ErrorMessage = "Los nombres no pueden exceder 50 caracteres")]
-        public string Nombres { get; set; }
+    public string Cedula { get; set; } = null!;
 
-        [Required(ErrorMessage = "Los apellidos son obligatorios")]
-        [Display(Name = "Apellidos")]
-        [StringLength(50, ErrorMessage = "Los apellidos no pueden exceder 50 caracteres")]
-        public string Apellidos { get; set; }
+    public string Nombres { get; set; } = null!;
 
-        [Required(ErrorMessage = "La fecha de nacimiento es obligatoria")]
-        [Display(Name = "Fecha de Nacimiento")]
-        [DataType(DataType.Date)]
-        public DateTime FechaNacimiento { get; set; }
+    public string Apellidos { get; set; } = null!;
 
-        [Required(ErrorMessage = "El teléfono es obligatorio")]
-        [Display(Name = "Teléfono")]
-        [Phone(ErrorMessage = "El formato del teléfono no es válido")]
-        public string Telefono { get; set; }
+    public DateOnly FechaNacimiento { get; set; }
 
-        [Required(ErrorMessage = "El email es obligatorio")]
-        [Display(Name = "Correo Electrónico")]
-        [EmailAddress(ErrorMessage = "El formato del email no es válido")]
-        public string Email { get; set; }
+    public string Telefono { get; set; } = null!;
 
-        [Display(Name = "Dirección")]
-        [StringLength(200, ErrorMessage = "La dirección no puede exceder 200 caracteres")]
-        public string Direccion { get; set; }
+    public string Email { get; set; } = null!;
 
-        [Display(Name = "Tipo de Sangre")]
-        public string? TipoSangre { get; set; }
+    public string? Direccion { get; set; }
 
-        [Display(Name = "Contacto de Emergencia")]
-        public string? ContactoEmergencia { get; set; }
+    public string? TipoSangre { get; set; }
 
-        [Display(Name = "Teléfono de Emergencia")]
-        public string? TelefonoEmergencia { get; set; }
+    public string? ContactoEmergencia { get; set; }
 
-        // Propiedades calculadas
-        public string NombreCompleto => $"{Nombres} {Apellidos}";
+    public string? TelefonoEmergencia { get; set; }
 
-        public int Edad
-        {
-            get
-            {
-                var hoy = DateTime.Today;
-                var edad = hoy.Year - FechaNacimiento.Year;
-                if (FechaNacimiento.Date > hoy.AddYears(-edad)) edad--;
-                return edad;
-            }
-        }
-    }
+    public DateTime FechaRegistro { get; set; }
+
+    public bool Activo { get; set; }
+
+    public virtual ICollection<CitasMedica> CitasMedicas { get; set; } = new List<CitasMedica>();
+
+    public virtual ICollection<HistorialesMedico> HistorialesMedicos { get; set; } = new List<HistorialesMedico>();
 }
