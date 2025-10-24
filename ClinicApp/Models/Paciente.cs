@@ -34,4 +34,14 @@ public partial class Paciente
     public virtual ICollection<CitasMedica> CitasMedicas { get; set; } = new List<CitasMedica>();
 
     public virtual ICollection<HistorialesMedico> HistorialesMedicos { get; set; } = new List<HistorialesMedico>();
+    public int Edad
+    {
+        get
+        {
+            var hoy = DateTime.Today;
+            var edad = hoy.Year - FechaNacimiento.Year;
+            
+            return edad;
+        }
+    }
 }

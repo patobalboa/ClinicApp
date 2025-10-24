@@ -1,0 +1,54 @@
+﻿<!-- Views/Pacientes/Delete.cshtml -->
+@model Paciente
+@{
+    ViewData["Title"] = "Eliminar Paciente";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Confirmar Eliminación
+                    </h4>
+                </div>
+                <div class="card-body text-center">
+                    <i class="fas fa-user-times fa-4x text-danger mb-4"></i>
+
+                    <h5 class="mb-3">¿Está seguro de que desea eliminar este paciente?</h5>
+
+                    <div class="alert alert-warning">
+                        <strong>Esta acción no se puede deshacer</strong>
+                    </div>
+
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="text-primary">@Model.Nombres @Model.Apellidos</h6>
+                            <p class="mb-1"><strong>Cédula:</strong> @Model.Cedula</p>
+                            <p class="mb-1"><strong>Edad:</strong> @Model.Edad años</p>
+                            @if (!string.IsNullOrEmpty(Model.Telefono))
+                            {
+                                <p class="mb-0"><strong>Teléfono:</strong> @Model.Telefono</p>
+                            }
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete" method="post" class="mt-4">
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-action="Index" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times me-1"></i>
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                <i class="fas fa-trash me-1"></i>
+                                Eliminar Definitivamente
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
