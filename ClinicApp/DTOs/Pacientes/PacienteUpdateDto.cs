@@ -11,8 +11,8 @@ namespace ClinicApp.DTOs.Pacientes
         [Required(ErrorMessage = "El ID es obligatorio")]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "La cédula es obligatoria")]
-        [CedulaEcuatoriana]
+        [Required(ErrorMessage = "El RUT es obligatorio")]
+        [RutChileno]
         public string Cedula { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Los nombres son obligatorios")]

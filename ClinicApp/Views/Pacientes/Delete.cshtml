@@ -1,5 +1,5 @@
 ﻿<!-- Views/Pacientes/Delete.cshtml -->
-@model Paciente
+@model ClinicApp.DTOs.Pacientes.PacienteDto
 @{
     ViewData["Title"] = "Eliminar Paciente";
 }
@@ -25,13 +25,11 @@
 
                     <div class="card bg-light">
                         <div class="card-body">
-                            <h6 class="text-primary">@Model.Nombres @Model.Apellidos</h6>
-                            <p class="mb-1"><strong>Cédula:</strong> @Model.Cedula</p>
+                            <h6 class="text-primary">@Model.NombreCompleto</h6>
+                            <p class="mb-1"><strong>RUT:</strong> @Model.Cedula</p>
                             <p class="mb-1"><strong>Edad:</strong> @Model.Edad años</p>
-                            @if (!string.IsNullOrEmpty(Model.Telefono))
-                            {
-                                <p class="mb-0"><strong>Teléfono:</strong> @Model.Telefono</p>
-                            }
+                            <p class="mb-1"><strong>Teléfono:</strong> @Model.Telefono</p>
+                            <p class="mb-0"><strong>Email:</strong> @Model.Email</p>
                         </div>
                     </div>
 

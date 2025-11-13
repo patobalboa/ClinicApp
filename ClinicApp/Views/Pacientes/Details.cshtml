@@ -1,5 +1,5 @@
 ﻿<!-- Views/Pacientes/Details.cshtml -->
-@model Paciente
+@model ClinicApp.DTOs.Pacientes.PacienteDto
 @{
     ViewData["Title"] = "Detalles del Paciente";
 }
@@ -17,10 +17,10 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h5 class="text-primary">@Model.Nombres @Model.Apellidos</h5>
+                            <h5 class="text-primary">@Model.NombreCompleto</h5>
 
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Cédula:</label>
+                                <label class="form-label fw-bold">RUT:</label>
                                 <p class="form-control-plaintext">@Model.Cedula</p>
                             </div>
 
@@ -35,30 +35,33 @@
                                     <span class="badge bg-primary fs-6">@Model.Edad años</span>
                                 </p>
                             </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Estado:</label>
+                                <p class="form-control-plaintext">
+                                    <span class="badge @(Model.Activo ? "bg-success" : "bg-secondary") fs-6">
+                                        @(Model.Activo ? "Activo" : "Inactivo")
+                                    </span>
+                                </p>
+                            </div>
                         </div>
 
                         <div class="col-md-6">
-                            @if (!string.IsNullOrEmpty(Model.Telefono))
-                            {
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Teléfono:</label>
-                                    <p class="form-control-plaintext">
-                                        <i class="fas fa-phone text-success me-1"></i>
-                                        @Model.Telefono
-                                    </p>
-                                </div>
-                            }
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Teléfono:</label>
+                                <p class="form-control-plaintext">
+                                    <i class="fas fa-phone text-success me-1"></i>
+                                    @Model.Telefono
+                                </p>
+                            </div>
 
-                            @if (!string.IsNullOrEmpty(Model.Email))
-                            {
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Email:</label>
-                                    <p class="form-control-plaintext">
-                                        <i class="fas fa-envelope text-info me-1"></i>
-                                        <a href="mailto:@Model.Email">@Model.Email</a>
-                                    </p>
-                                </div>
-                            }
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Email:</label>
+                                <p class="form-control-plaintext">
+                                    <i class="fas fa-envelope text-info me-1"></i>
+                                    <a href="mailto:@Model.Email">@Model.Email</a>
+                                </p>
+                            </div>
 
                             @if (!string.IsNullOrEmpty(Model.TipoSangre))
                             {
@@ -69,6 +72,14 @@
                                     </p>
                                 </div>
                             }
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Fecha de Registro:</label>
+                                <p class="form-control-plaintext">
+                                    <i class="fas fa-calendar text-secondary me-1"></i>
+                                    @Model.FechaRegistro.ToString("dd/MM/yyyy HH:mm")
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -84,6 +95,35 @@
                                     </p>
                                 </div>
                             </div>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.ContactoEmergencia) || !string.IsNullOrEmpty(Model.TelefonoEmergencia))
+                    {
+                        <hr>
+                        <h6 class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Contacto de Emergencia</h6>
+                        <div class="row">
+                            @if (!string.IsNullOrEmpty(Model.ContactoEmergencia))
+                            {
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Nombre:</label>
+                                        <p class="form-control-plaintext">@Model.ContactoEmergencia</p>
+                                    </div>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.TelefonoEmergencia))
+                            {
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Teléfono:</label>
+                                        <p class="form-control-plaintext">
+                                            <i class="fas fa-phone text-danger me-1"></i>
+                                            @Model.TelefonoEmergencia
+                                        </p>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     }
 

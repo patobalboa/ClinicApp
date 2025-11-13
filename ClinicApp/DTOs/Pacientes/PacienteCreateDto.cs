@@ -8,8 +8,8 @@ namespace ClinicApp.DTOs.Pacientes
     /// </summary>
     public class PacienteCreateDto
     {
-        [Required(ErrorMessage = "La cédula es obligatoria")]
-        [CedulaEcuatoriana]
+        [Required(ErrorMessage = "El RUT es obligatorio")]
+        [RutChileno]
         public string Cedula { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Los nombres son obligatorios")]

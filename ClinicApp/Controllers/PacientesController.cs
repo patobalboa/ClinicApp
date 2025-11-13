@@ -96,13 +96,13 @@ namespace ClinicApp.Controllers
 
             try
             {
-                // Verificar si ya existe un paciente con la misma cédula
+                // Verificar si ya existe un paciente con el mismo RUT
                 var existePaciente = await _context.Pacientes
                     .AnyAsync(p => p.Cedula == pacienteDto.Cedula);
 
                 if (existePaciente)
                 {
-                    ModelState.AddModelError("Cedula", "Ya existe un paciente registrado con esta cédula");
+                    ModelState.AddModelError("Cedula", "Ya existe un paciente registrado con este RUT");
                     return View(pacienteDto);
                 }
 
@@ -196,7 +196,7 @@ namespace ClinicApp.Controllers
 
                 if (existePaciente)
                 {
-                    ModelState.AddModelError("Cedula", "Ya existe otro paciente registrado con esta cédula");
+                    ModelState.AddModelError("Cedula", "Ya existe otro paciente registrado con este RUT");
                     return View(pacienteDto);
                 }
 
