@@ -1,0 +1,82 @@
+@model ClinicApp.Models.CitasMedica
+
+@{
+    ViewData["Title"] = "Crear Cita Médica";
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">?? Crear Nueva Cita Médica</h1>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Información de la Cita</h6>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PacienteId" class="form-label">Paciente</label>
+                        <select asp-for="PacienteId" class="form-control" asp-items="ViewBag.Pacientes" required>
+                            <option value="">-- Seleccione un paciente --</option>
+                        </select>
+                        <span asp-validation-for="PacienteId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MedicoId" class="form-label">Médico</label>
+                        <select asp-for="MedicoId" class="form-control" asp-items="ViewBag.Medicos" required>
+                            <option value="">-- Seleccione un médico --</option>
+                        </select>
+                        <span asp-validation-for="MedicoId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FechaHora" class="form-label">Fecha y Hora</label>
+                        <input asp-for="FechaHora" class="form-control" type="datetime-local" required />
+                        <span asp-validation-for="FechaHora" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Estado" class="form-label">Estado</label>
+                        <select asp-for="Estado" class="form-control" required>
+                            <option value="Programada">Programada</option>
+                            <option value="Confirmada">Confirmada</option>
+                        </select>
+                        <span asp-validation-for="Estado" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Motivo" class="form-label">Motivo de la Consulta</label>
+                    <textarea asp-for="Motivo" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Motivo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Observaciones" class="form-label">Observaciones</label>
+                    <textarea asp-for="Observaciones" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Observaciones" class="text-danger"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,132 @@
+@model IEnumerable<ClinicApp.Models.HistorialesMedico>
+
+@{
+    ViewData["Title"] = "Historiales Médicos";
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">?? Historiales Médicos</h1>
+        <a asp-action="Create" class="btn btn-primary shadow-sm">
+            <i class="fas fa-plus fa-sm text-white-50"></i> Nuevo Historial
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Filtros -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form method="get" asp-action="Index">
+                <div class="row">
+                    <div class="col-md-5">
+                        <label class="form-label">Filtrar por Paciente</label>
+                        <select name="pacienteId" class="form-select">
+                            <option value="">-- Todos los pacientes --</option>
+                            @foreach (var item in ViewBag.PacientesFiltro as SelectList)
+                            {
+                                <option value="@item.Value" selected="@(item.Value == ViewBag.PacienteId?.ToString())">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label">Filtrar por Médico</label>
+                        <select name="medicoId" class="form-select">
+                            <option value="">-- Todos los médicos --</option>
+                            @foreach (var item in ViewBag.MedicosFiltro as SelectList)
+                            {
+                                <option value="@item.Value" selected="@(item.Value == ViewBag.MedicoId?.ToString())">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search"></i> Filtrar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Listado de Historiales Médicos</h6>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Paciente</th>
+                                <th>Médico</th>
+                                <th>Motivo</th>
+                                <th>Diagnóstico</th>
+                                <th>Próxima Cita</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var historial in Model)
+                            {
+                                <tr>
+                                    <td>@historial.FechaConsulta.ToString("dd/MM/yyyy")</td>
+                                    <td>@historial.Paciente.Nombres @historial.Paciente.Apellidos</td>
+                                    <td>Dr(a). @historial.Medico.Nombres @historial.Medico.Apellidos<br/>
+                                        <small class="text-muted">@historial.Medico.Especialidad.Nombre</small>
+                                    </td>
+                                    <td>@(historial.MotivoConsulta?.Substring(0, Math.Min(historial.MotivoConsulta.Length, 50)) ?? "No especificado")</td>
+                                    <td>@(historial.Diagnostico?.Substring(0, Math.Min(historial.Diagnostico.Length, 50)) ?? "No especificado")</td>
+                                    <td>
+                                        @if (historial.ProximaCita.HasValue)
+                                        {
+                                            @historial.ProximaCita.Value.ToString("dd/MM/yyyy")
+                                        }
+                                        else
+                                        {
+                                            <text>-</text>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@historial.Id" class="btn btn-info btn-sm" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@historial.Id" class="btn btn-warning btn-sm" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@historial.Id" class="btn btn-danger btn-sm" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No hay historiales médicos registrados.
+                </div>
+            }
+        </div>
+    </div>
+</div>

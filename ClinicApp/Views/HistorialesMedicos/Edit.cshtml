@@ -1,0 +1,96 @@
+@model ClinicApp.Models.HistorialesMedico
+
+@{
+    ViewData["Title"] = "Editar Historial Médico";
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">?? Editar Historial Médico</h1>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Modificar Información del Historial Médico</h6>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="PacienteId" class="form-label">Paciente</label>
+                        <select asp-for="PacienteId" class="form-control" asp-items="ViewBag.Pacientes" required>
+                            <option value="">-- Seleccione un paciente --</option>
+                        </select>
+                        <span asp-validation-for="PacienteId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="MedicoId" class="form-label">Médico</label>
+                        <select asp-for="MedicoId" class="form-control" asp-items="ViewBag.Medicos" required>
+                            <option value="">-- Seleccione un médico --</option>
+                        </select>
+                        <span asp-validation-for="MedicoId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="FechaConsulta" class="form-label">Fecha de Consulta</label>
+                        <input asp-for="FechaConsulta" class="form-control" type="datetime-local" required />
+                        <span asp-validation-for="FechaConsulta" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MotivoConsulta" class="form-label">Motivo de la Consulta</label>
+                    <textarea asp-for="MotivoConsulta" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="MotivoConsulta" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Diagnostico" class="form-label">Diagnóstico</label>
+                    <textarea asp-for="Diagnostico" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Diagnostico" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Tratamiento" class="form-label">Tratamiento</label>
+                    <textarea asp-for="Tratamiento" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Tratamiento" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Medicamentos" class="form-label">Medicamentos</label>
+                    <textarea asp-for="Medicamentos" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Medicamentos" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Observaciones" class="form-label">Observaciones</label>
+                    <textarea asp-for="Observaciones" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Observaciones" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ProximaCita" class="form-label">Próxima Cita (opcional)</label>
+                    <input asp-for="ProximaCita" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="ProximaCita" class="text-danger"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Actualizar
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

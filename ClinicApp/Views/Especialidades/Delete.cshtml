@@ -1,0 +1,56 @@
+@model ClinicApp.Models.Especialidade
+
+@{
+    ViewData["Title"] = "Eliminar Especialidad";
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">?? Eliminar Especialidad</h1>
+    </div>
+
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">
+            <i class="fas fa-exclamation-triangle"></i> ¿Está seguro que desea eliminar esta especialidad?
+        </h4>
+        <p>Esta acción no se puede deshacer.</p>
+        @if (Model.Medicos.Any())
+        {
+            <hr>
+            <p class="mb-0 text-danger">
+                <strong>¡Atención!</strong> Esta especialidad tiene @Model.Medicos.Count médico(s) asociado(s) y no se podrá eliminar.
+            </p>
+        }
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-danger">Información de la Especialidad a Eliminar</h6>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Nombre:</dt>
+                <dd class="col-sm-9">@Model.Nombre</dd>
+
+                <dt class="col-sm-3">Descripción:</dt>
+                <dd class="col-sm-9">@(Model.Descripcion ?? "Sin descripción")</dd>
+
+                <dt class="col-sm-3">Estado:</dt>
+                <dd class="col-sm-9">@(Model.Activa ? "Activa" : "Inactiva")</dd>
+
+                <dt class="col-sm-3">Médicos Asociados:</dt>
+                <dd class="col-sm-9">@Model.Medicos.Count</dd>
+            </dl>
+
+            <form asp-action="Delete" method="post" class="mt-4">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger" @(Model.Medicos.Any() ? "disabled" : "")>
+                    <i class="fas fa-trash"></i> Confirmar Eliminación
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Cancelar
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

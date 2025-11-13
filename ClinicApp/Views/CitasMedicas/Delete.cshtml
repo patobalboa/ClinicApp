@@ -1,0 +1,55 @@
+@model ClinicApp.Models.CitasMedica
+
+@{
+    ViewData["Title"] = "Eliminar Cita Médica";
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">?? Eliminar Cita Médica</h1>
+    </div>
+
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">
+            <i class="fas fa-exclamation-triangle"></i> ¿Está seguro que desea eliminar esta cita médica?
+        </h4>
+        <p>Esta acción no se puede deshacer.</p>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-danger">Información de la Cita a Eliminar</h6>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Fecha y Hora:</dt>
+                <dd class="col-sm-9"><strong>@Model.FechaHora.ToString("dddd, dd/MM/yyyy HH:mm")</strong></dd>
+
+                <dt class="col-sm-3">Paciente:</dt>
+                <dd class="col-sm-9">@Model.Paciente.Nombres @Model.Paciente.Apellidos</dd>
+
+                <dt class="col-sm-3">Médico:</dt>
+                <dd class="col-sm-9">Dr(a). @Model.Medico.Nombres @Model.Medico.Apellidos</dd>
+
+                <dt class="col-sm-3">Especialidad:</dt>
+                <dd class="col-sm-9">@Model.Medico.Especialidad.Nombre</dd>
+
+                <dt class="col-sm-3">Motivo:</dt>
+                <dd class="col-sm-9">@(Model.Motivo ?? "No especificado")</dd>
+
+                <dt class="col-sm-3">Estado:</dt>
+                <dd class="col-sm-9">@Model.Estado</dd>
+            </dl>
+
+            <form asp-action="Delete" method="post" class="mt-4">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Confirmar Eliminación
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Cancelar
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

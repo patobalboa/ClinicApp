@@ -1,4 +1,6 @@
-﻿using ClinicApp.Models;
+﻿using AutoMapper;
+using ClinicApp.DTOs.Pacientes;
+using ClinicApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -7,15 +9,17 @@ namespace ClinicApp.Controllers
 {
     public class PacientesController : Controller
     {
-
         private readonly ClinicAppDbContext _context;
         private readonly ILogger<PacientesController> _logger;
+        private readonly IMapper _mapper;
 
-        public PacientesController(ClinicAppDbContext context, ILogger<PacientesController> logger)
+        public PacientesController(ClinicAppDbContext context, ILogger<PacientesController> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
+            _mapper = mapper;
         }
+
         // GET: /Pacientes
         // READ - Mostrar lista de todos los pacientes
         public async Task<IActionResult> Index()
@@ -27,14 +31,17 @@ namespace ClinicApp.Controllers
                     .ThenBy(p => p.Nombres)
                     .ToListAsync();
 
-                _logger.LogInformation("Se cargaron {Count} pacientes", pacientes.Count);
-                return View(pacientes);
+                // Mapear entidades a DTOs
+                var pacientesDto = _mapper.Map<List<PacienteDto>>(pacientes);
+
+                _logger.LogInformation("Se cargaron {Count} pacientes", pacientesDto.Count);
+                return View(pacientesDto);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al cargar la lista de pacientes");
                 TempData["Error"] = "Error al cargar la lista de pacientes";
-                return View(new List<Paciente>());
+                return View(new List<PacienteDto>());
             }
         }
 
@@ -57,7 +64,9 @@ namespace ClinicApp.Controllers
                     return NotFound();
                 }
 
-                return View(paciente);
+                // Mapear entidad a DTO
+                var pacienteDto = _mapper.Map<PacienteDto>(paciente);
+                return View(pacienteDto);
             }
             catch (Exception ex)
             {
@@ -71,45 +80,48 @@ namespace ClinicApp.Controllers
         // CREATE - Mostrar formulario para crear nuevo paciente
         public IActionResult Create()
         {
-            return View(new Paciente());
+            return View(new PacienteCreateDto());
         }
 
         // POST: /Pacientes/Create
         // CREATE - Procesar la creación de un nuevo paciente
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Paciente paciente)
+        public async Task<IActionResult> Create(PacienteCreateDto pacienteDto)
         {
             if (!ModelState.IsValid)
             {
-                return View(paciente);
+                return View(pacienteDto);
             }
 
             try
             {
                 // Verificar si ya existe un paciente con la misma cédula
                 var existePaciente = await _context.Pacientes
-                    .AnyAsync(p => p.Cedula == paciente.Cedula);
+                    .AnyAsync(p => p.Cedula == pacienteDto.Cedula);
 
                 if (existePaciente)
                 {
                     ModelState.AddModelError("Cedula", "Ya existe un paciente registrado con esta cédula");
-                    return View(paciente);
+                    return View(pacienteDto);
                 }
 
                 // Verificar si ya existe un paciente con el mismo email
-                if (!string.IsNullOrEmpty(paciente.Email))
+                if (!string.IsNullOrEmpty(pacienteDto.Email))
                 {
                     var existeEmail = await _context.Pacientes
-                        .AnyAsync(p => p.Email == paciente.Email);
+                        .AnyAsync(p => p.Email == pacienteDto.Email);
 
                     if (existeEmail)
                     {
                         ModelState.AddModelError("Email", "Ya existe un paciente registrado con este email");
-                        return View(paciente);
+                        return View(pacienteDto);
                     }
                 }
 
+                // Mapear DTO a entidad
+                var paciente = _mapper.Map<Paciente>(pacienteDto);
+                
                 _context.Pacientes.Add(paciente);
                 await _context.SaveChangesAsync();
 
@@ -122,10 +134,10 @@ namespace ClinicApp.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al crear paciente: {Nombres} {Apellidos}",
-                    paciente.Nombres, paciente.Apellidos);
+                    pacienteDto.Nombres, pacienteDto.Apellidos);
 
                 ModelState.AddModelError("", "Ocurrió un error al guardar el paciente. Por favor, intente nuevamente.");
-                return View(paciente);
+                return View(pacienteDto);
             }
         }
 
@@ -148,7 +160,9 @@ namespace ClinicApp.Controllers
                     return NotFound();
                 }
 
-                return View(paciente);
+                // Mapear entidad a UpdateDTO
+                var pacienteDto = _mapper.Map<PacienteUpdateDto>(paciente);
+                return View(pacienteDto);
             }
             catch (Exception ex)
             {
@@ -162,43 +176,46 @@ namespace ClinicApp.Controllers
         // UPDATE - Procesar la actualización del paciente
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Paciente paciente)
+        public async Task<IActionResult> Edit(int id, PacienteUpdateDto pacienteDto)
         {
-            if (id != paciente.Id)
+            if (id != pacienteDto.Id)
             {
                 return BadRequest("ID no coincide");
             }
 
             if (!ModelState.IsValid)
             {
-                return View(paciente);
+                return View(pacienteDto);
             }
 
             try
             {
                 // Verificar si existe otro paciente con la misma cédula (excluyendo el actual)
                 var existePaciente = await _context.Pacientes
-                    .AnyAsync(p => p.Cedula == paciente.Cedula && p.Id != paciente.Id);
+                    .AnyAsync(p => p.Cedula == pacienteDto.Cedula && p.Id != pacienteDto.Id);
 
                 if (existePaciente)
                 {
                     ModelState.AddModelError("Cedula", "Ya existe otro paciente registrado con esta cédula");
-                    return View(paciente);
+                    return View(pacienteDto);
                 }
 
                 // Verificar email duplicado (excluyendo el actual)
-                if (!string.IsNullOrEmpty(paciente.Email))
+                if (!string.IsNullOrEmpty(pacienteDto.Email))
                 {
                     var existeEmail = await _context.Pacientes
-                        .AnyAsync(p => p.Email == paciente.Email && p.Id != paciente.Id);
+                        .AnyAsync(p => p.Email == pacienteDto.Email && p.Id != pacienteDto.Id);
 
                     if (existeEmail)
                     {
                         ModelState.AddModelError("Email", "Ya existe otro paciente registrado con este email");
-                        return View(paciente);
+                        return View(pacienteDto);
                     }
                 }
 
+                // Mapear DTO a entidad
+                var paciente = _mapper.Map<Paciente>(pacienteDto);
+                
                 _context.Update(paciente);
                 await _context.SaveChangesAsync();
 
@@ -210,20 +227,20 @@ namespace ClinicApp.Controllers
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!PacienteExists(paciente.Id))
+                if (!PacienteExists(pacienteDto.Id))
                 {
                     return NotFound();
                 }
 
                 _logger.LogError(ex, "Error de concurrencia al actualizar paciente con ID {Id}", id);
                 ModelState.AddModelError("", "El paciente fue modificado por otro usuario. Por favor, recargue la página.");
-                return View(paciente);
+                return View(pacienteDto);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al actualizar paciente con ID {Id}", id);
                 ModelState.AddModelError("", "Ocurrió un error al actualizar el paciente. Por favor, intente nuevamente.");
-                return View(paciente);
+                return View(pacienteDto);
             }
         }
 
@@ -246,7 +263,9 @@ namespace ClinicApp.Controllers
                     return NotFound();
                 }
 
-                return View(paciente);
+                // Mapear entidad a DTO
+                var pacienteDto = _mapper.Map<PacienteDto>(paciente);
+                return View(pacienteDto);
             }
             catch (Exception ex)
             {
@@ -290,11 +309,11 @@ namespace ClinicApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+
         // Método auxiliar para verificar si un paciente existe
         private bool PacienteExists(int id)
         {
             return _context.Pacientes.Any(p => p.Id == id);
         }
-
     }
 }

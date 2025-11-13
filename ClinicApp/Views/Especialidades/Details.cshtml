@@ -1,0 +1,74 @@
+@model ClinicApp.Models.Especialidade
+
+@{
+    ViewData["Title"] = "Detalles de la Especialidad";
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">?? Detalles de la Especialidad</h1>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">@Model.Nombre</h6>
+            @if (Model.Activa)
+            {
+                <span class="badge bg-success">Activa</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Inactiva</span>
+            }
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Nombre:</dt>
+                <dd class="col-sm-9">@Model.Nombre</dd>
+
+                <dt class="col-sm-3">Descripción:</dt>
+                <dd class="col-sm-9">@(Model.Descripcion ?? "Sin descripción")</dd>
+
+                <dt class="col-sm-3">Estado:</dt>
+                <dd class="col-sm-9">@(Model.Activa ? "Activa" : "Inactiva")</dd>
+
+                <dt class="col-sm-3">Médicos Asociados:</dt>
+                <dd class="col-sm-9">@Model.Medicos.Count</dd>
+            </dl>
+
+            @if (Model.Medicos.Any())
+            {
+                <h5 class="mt-4">Médicos de esta especialidad:</h5>
+                <ul class="list-group">
+                    @foreach (var medico in Model.Medicos)
+                    {
+                        <li class="list-group-item">
+                            <strong>Dr(a). @medico.Nombres @medico.Apellidos</strong> 
+                            <span class="text-muted">- Licencia: @medico.NumeroLicencia</span>
+                            @if (medico.Activo)
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inactivo</span>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+
+            <div class="mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver a la lista
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

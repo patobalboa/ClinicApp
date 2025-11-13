@@ -1,0 +1,103 @@
+@model ClinicApp.Models.HistorialesMedico
+
+@{
+    ViewData["Title"] = "Detalles del Historial Médico";
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">?? Detalles del Historial Médico</h1>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Información del Historial Médico</h6>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5 class="text-primary">Información del Paciente</h5>
+                    <dl class="row">
+                        <dt class="col-sm-4">Paciente:</dt>
+                        <dd class="col-sm-8">@Model.Paciente.Nombres @Model.Paciente.Apellidos</dd>
+
+                        <dt class="col-sm-4">Cédula:</dt>
+                        <dd class="col-sm-8">@Model.Paciente.Cedula</dd>
+
+                        <dt class="col-sm-4">Teléfono:</dt>
+                        <dd class="col-sm-8">@Model.Paciente.Telefono</dd>
+                    </dl>
+                </div>
+
+                <div class="col-md-6">
+                    <h5 class="text-primary">Información del Médico</h5>
+                    <dl class="row">
+                        <dt class="col-sm-4">Médico:</dt>
+                        <dd class="col-sm-8">Dr(a). @Model.Medico.Nombres @Model.Medico.Apellidos</dd>
+
+                        <dt class="col-sm-4">Especialidad:</dt>
+                        <dd class="col-sm-8">@Model.Medico.Especialidad.Nombre</dd>
+
+                        <dt class="col-sm-4">Licencia:</dt>
+                        <dd class="col-sm-8">@Model.Medico.NumeroLicencia</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <hr/>
+
+            <h5 class="text-primary mb-3">Detalles de la Consulta</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Fecha de Consulta:</dt>
+                <dd class="col-sm-9"><strong>@Model.FechaConsulta.ToString("dddd, dd/MM/yyyy HH:mm")</strong></dd>
+
+                <dt class="col-sm-3">Motivo de Consulta:</dt>
+                <dd class="col-sm-9">@(Model.MotivoConsulta ?? "No especificado")</dd>
+
+                <dt class="col-sm-3">Diagnóstico:</dt>
+                <dd class="col-sm-9">
+                    <div class="border p-3 bg-light">
+                        @(Model.Diagnostico ?? "No especificado")
+                    </div>
+                </dd>
+
+                <dt class="col-sm-3">Tratamiento:</dt>
+                <dd class="col-sm-9">
+                    <div class="border p-3 bg-light">
+                        @(Model.Tratamiento ?? "No especificado")
+                    </div>
+                </dd>
+
+                <dt class="col-sm-3">Medicamentos:</dt>
+                <dd class="col-sm-9">@(Model.Medicamentos ?? "No especificado")</dd>
+
+                <dt class="col-sm-3">Observaciones:</dt>
+                <dd class="col-sm-9">@(Model.Observaciones ?? "Sin observaciones")</dd>
+
+                <dt class="col-sm-3">Próxima Cita:</dt>
+                <dd class="col-sm-9">
+                    @if (Model.ProximaCita.HasValue)
+                    {
+                        <span class="badge bg-info">@Model.ProximaCita.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                    }
+                    else
+                    {
+                        <text>No programada</text>
+                    }
+                </dd>
+            </dl>
+
+            <div class="mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver a la lista
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

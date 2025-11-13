@@ -1,0 +1,121 @@
+@model IEnumerable<ClinicApp.Models.CitasMedica>
+
+@{
+    ViewData["Title"] = "Lista de Citas Médicas";
+    var estadoFiltro = ViewBag.EstadoFiltro as string;
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">?? Citas Médicas</h1>
+        <a asp-action="Create" class="btn btn-primary shadow-sm">
+            <i class="fas fa-plus fa-sm text-white-50"></i> Nueva Cita
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="m-0 font-weight-bold text-primary">Listado de Citas Médicas</h6>
+                </div>
+                <div class="col-md-6">
+                    <form method="get" asp-action="Index" class="d-flex justify-content-end">
+                        <select name="estado" class="form-select form-select-sm" onchange="this.form.submit()" style="width: auto;">
+                            <option value="">-- Todas las citas --</option>
+                            @foreach (var estado in ViewBag.Estados as List<string>)
+                            {
+                                <option value="@estado" selected="@(estado == estadoFiltro)">@estado</option>
+                            }
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Fecha y Hora</th>
+                                <th>Paciente</th>
+                                <th>Médico</th>
+                                <th>Especialidad</th>
+                                <th>Motivo</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var cita in Model)
+                            {
+                                <tr>
+                                    <td>@cita.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@cita.Paciente.Nombres @cita.Paciente.Apellidos</td>
+                                    <td>Dr(a). @cita.Medico.Nombres @cita.Medico.Apellidos</td>
+                                    <td>@cita.Medico.Especialidad.Nombre</td>
+                                    <td>@(cita.Motivo ?? "No especificado")</td>
+                                    <td>
+                                        @switch (cita.Estado)
+                                        {
+                                            case "Programada":
+                                                <span class="badge bg-info">@cita.Estado</span>
+                                                break;
+                                            case "Confirmada":
+                                                <span class="badge bg-primary">@cita.Estado</span>
+                                                break;
+                                            case "Completada":
+                                                <span class="badge bg-success">@cita.Estado</span>
+                                                break;
+                                            case "Cancelada":
+                                                <span class="badge bg-danger">@cita.Estado</span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-secondary">@cita.Estado</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@cita.Id" class="btn btn-info btn-sm" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@cita.Id" class="btn btn-warning btn-sm" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@cita.Id" class="btn btn-danger btn-sm" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No hay citas médicas registradas.
+                </div>
+            }
+        </div>
+    </div>
+</div>
