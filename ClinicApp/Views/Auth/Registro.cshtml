@@ -1,4 +1,4 @@
-﻿@model DTOs.RegistroDto
+﻿@model ClinicApp.DTOs.RegistroDto
 @{
     ViewData["Title"] = "Registro de Usuario";
     Layout = null;
@@ -28,6 +28,12 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-radius: 15px 15px 0 0 !important;
+        }
+
+        .required::after {
+            content: " *";
+            color: red;
+            font-weight: bold;
         }
     </style>
 </head>

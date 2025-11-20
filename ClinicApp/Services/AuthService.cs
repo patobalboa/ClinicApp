@@ -22,23 +22,40 @@ namespace ClinicApp.Services
         /// <summary>
         /// Valida credenciales de usuario
         /// </summary>
-        public async Task<Usuario> ValidarCredenciales(string nombreUsuario, string password)
+        public async Task<Usuario?> ValidarCredenciales(string nombreUsuario, string password)
         {
+            _logger.LogInformation("Intentando login para usuario: {Usuario}", nombreUsuario);
+
             var usuario = await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.Activo);
 
             if (usuario == null)
             {
-                _logger.LogWarning("Intento de login con usuario inexistente: {Usuario}", nombreUsuario);
+                _logger.LogWarning("Usuario no encontrado o inactivo: {Usuario}", nombreUsuario);
                 return null;
             }
 
+            _logger.LogInformation("Usuario encontrado: {Usuario}, ID: {Id}", usuario.NombreUsuario, usuario.Id);
+            _logger.LogInformation("Hash almacenado (primeros 30 caracteres): {Hash}...", 
+                usuario.PasswordHash.Substring(0, Math.Min(30, usuario.PasswordHash.Length)));
+
             // Verificar password con BCrypt
-            bool passwordValido = BCrypt.Net.BCrypt.Verify(password, usuario.PasswordHash);
+            bool passwordValido = false;
+            try
+            {
+                passwordValido = BCrypt.Net.BCrypt.Verify(password, usuario.PasswordHash);
+                _logger.LogInformation("Verificación BCrypt: {Resultado}", passwordValido ? "EXITOSA" : "FALLIDA");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al verificar password con BCrypt");
+                return null;
+            }
 
             if (!passwordValido)
             {
-                _logger.LogWarning("Intento de login con password inválido para usuario: {Usuario}", nombreUsuario);
+                _logger.LogWarning("Password inválido para usuario: {Usuario}", nombreUsuario);
+                _logger.LogWarning("Tip: Verifique que la contraseña sea exactamente: Admin123! (con A mayúscula y ! al final)");
                 return null;
             }
 
