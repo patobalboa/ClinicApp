@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using ClinicApp.DTOs.Pacientes;
 using ClinicApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace ClinicApp.Controllers
 {
+    [Authorize]
     public class PacientesController : Controller
     {
         private readonly ClinicAppDbContext _context;
@@ -246,6 +248,7 @@ namespace ClinicApp.Controllers
 
         // GET: /Pacientes/Delete/5
         // DELETE - Mostrar confirmación de eliminación
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -279,6 +282,7 @@ namespace ClinicApp.Controllers
         // DELETE - Ejecutar la eliminación
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try

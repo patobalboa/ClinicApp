@@ -25,6 +25,12 @@ public partial class ClinicAppDbContext : DbContext
 
     public virtual DbSet<Paciente> Pacientes { get; set; }
 
+    public virtual DbSet<Usuario> Usuarios { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("server=PC06LAB318\\SQLEXPRESS; initial catalog=ClinicAppDB; Trusted_connection=True;Encrypt=False");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<CitasMedica>(entity =>
@@ -129,6 +135,26 @@ public partial class ClinicAppDbContext : DbContext
             entity.Property(e => e.Telefono).HasMaxLength(20);
             entity.Property(e => e.TelefonoEmergencia).HasMaxLength(20);
             entity.Property(e => e.TipoSangre).HasMaxLength(5);
+        });
+
+        modelBuilder.Entity<Usuario>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Usuarios__3214EC0763375B84");
+
+            entity.HasIndex(e => e.NombreUsuario, "UQ__Usuarios__6B0F5AE07467BF15").IsUnique();
+
+            entity.HasIndex(e => e.Email, "UQ__Usuarios__A9D1053421E725AD").IsUnique();
+
+            entity.Property(e => e.Activo).HasDefaultValue(true);
+            entity.Property(e => e.Email).HasMaxLength(200);
+            entity.Property(e => e.FechaCreacion)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.NombreCompleto).HasMaxLength(100);
+            entity.Property(e => e.NombreUsuario).HasMaxLength(50);
+            entity.Property(e => e.PasswordHash).HasMaxLength(255);
+            entity.Property(e => e.Rol).HasMaxLength(20);
+            entity.Property(e => e.UltimoAcceso).HasColumnType("datetime");
         });
 
         OnModelCreatingPartial(modelBuilder);
